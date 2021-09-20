@@ -20,7 +20,7 @@ public class Participation {
         this.cours = cours;
     }
 
-    public void addEtu(int note){
+    public void addNote(int note){
         this.notes.add(note);
     }
 

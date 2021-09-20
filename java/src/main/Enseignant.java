@@ -27,5 +27,9 @@ public class Enseignant extends Utilisateur{
 
     public void corrigerRendu(Rendu rendu){
         Scan sc = new Scan();
+
+        System.out.println("Voici le contrnu du rendu :");
+        System.out.println(rendu.getDocument());
+        rendu.setNote(sc.ecouteInt("Quelle note voulez vous mettre ?"));
     }
 }

@@ -9,6 +9,10 @@ public class Rendu {
         this.date = date;
     }
 
+    public String getDocument() {
+        return document;
+    }
+
     public void setNote(int note) {
         this.note = note;
     }

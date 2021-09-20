@@ -15,6 +15,6 @@ public class Admin extends Utilisateur{
     }
 
     public void attribuerCours(Cours cours, Enseignant enseignant){
-        System.out.println("Non implémenté");
+        cours.addEnseignant(enseignant);
     }
 }

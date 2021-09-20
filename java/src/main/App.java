@@ -1,7 +1,18 @@
 package main;
 
 public class App {
+
+
     public static void main(String[] args) {
+          /*
+        Rajouter le lien Participation-Etudiant
+         */
+        tests();
+
+    }
+
+    public static void tests(){
+
 
         Scan sc = new Scan();
 
@@ -16,14 +27,18 @@ public class App {
         Cours fr = admin.creerCours(enseignant);
 
         Etudiant etudiant = new Etudiant("e1", "e1", "add1", "e1@etu.fr", 001);
+        Etudiant etudiant2 = new Etudiant("e1", "e1", "add1", "e1@etu.fr", 001);
 
         etudiant.inscrireDansCours(fr);
+        etudiant2.inscrireDansCours(fr);
 
         enseignant.donnerCours(fr);
 
         Devoir dev = enseignant.creerDevoir(fr);
 
-        etudiant.creeRendu();
+        Rendu r = etudiant.creeRendu();
+        Rendu r2 = etudiant.creeRendu();
 
+        enseignant.corrigerRendu(r);
     }
 }

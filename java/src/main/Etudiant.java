@@ -26,6 +26,11 @@ public class Etudiant extends Utilisateur{
         certificats.add(certificat);
     }
 
+    @Override
+    public String getType() {
+        return "etu";
+    }
+
     public Rendu creeRendu(){
         Scan sc = new Scan();
         String doc = sc.ecoute("Faites votre devoir M."+getNom());

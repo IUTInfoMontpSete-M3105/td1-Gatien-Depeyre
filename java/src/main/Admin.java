@@ -1,6 +1,16 @@
 package main;
 
 public class Admin extends Utilisateur{
+    @Override
+    public String getType() {
+        return "admin";
+    }
+
+    public Admin() {
+        super("Nom", "Prenom", "adresse", "mail");
+
+    }
+
     public Admin(String nom, String prenom, String adresse, String mail) {
         super(nom, prenom, adresse, mail);
     }

@@ -25,6 +25,11 @@ public class Enseignant extends Utilisateur{
         cours.estDonne();
     }
 
+    @Override
+    public String getType() {
+        return "ens";
+    }
+
     public void corrigerRendu(Rendu rendu){
         Scan sc = new Scan();
 

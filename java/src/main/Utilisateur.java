@@ -1,6 +1,6 @@
 package main;
 
-public class Utilisateur {
+public abstract class Utilisateur {
     private String nom, prenom, adresse, mail;
 
     public Utilisateur(String nom, String prenom, String adresse, String mail) {
@@ -26,5 +26,9 @@ public class Utilisateur {
 
     public String getNom() {
         return nom;
+    }
+
+    public String getType(){
+        return "utilisateur";
     }
 }

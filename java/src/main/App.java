@@ -17,7 +17,8 @@ public class App {
         ArrayList<Devoir> devoirs = new ArrayList<>();
         utilisateurs.put("admin", new Admin());
 
-
+        System.out.println("Bienvenu dans ce système de gestion scolaire. Ceci est une version beta, merci de ne pas" +
+                " rentrer de valeurs illogiques, toutes les verifications de variables n'ont pas pu être faites");
         while(!msg.equals("stop")){
 
             msg = sc.ecoute("Veuillez rentrer votre identité (admin pour créer des comptes). Utilisateurs connus : "+
@@ -27,8 +28,7 @@ public class App {
                         tab_to_string(utilisateurs.keySet()));
 
             if(utilisateurs.get(msg).getType().equals("admin")){
-                Utilisateur u = creer_utilisateur(sc);
-                utilisateurs.put(u.getNom(), u);
+
             }
             else if(utilisateurs.get(msg).getType().equals("etu")){
                 action_etu((Etudiant) utilisateurs.get(msg), sc, cours, rendus, devoirs);
@@ -37,7 +37,7 @@ public class App {
                 System.out.println("Au revoir");
             }
             else{
-                action_ens((Enseignant) utilisateurs.get(msg), sc, cours, rendus, devoirs);
+                action_ens((Enseignant) utilisateurs.get(msg), sc, cours, rendus, devoirs, utilisateurs);
             }
         }
 
@@ -102,6 +102,23 @@ public class App {
         return total.toString();
     }
 
+    private static void action_admin(Admin admin, Scan sc, HashMap<String , Utilisateur> utilisateurs){
+        String action = sc.ecoute("Que voulez vous creer (utilisateur, cours) ?");
+        switch (action){
+            case "utilisateur":
+                Utilisateur u = creer_utilisateur(sc);
+                utilisateurs.put(u.getNom(), u);
+                break;
+            case "cours":
+                Utilisateur uti = utilisateurs.get(sc.ecoute("Quel est le nom de l'enseignant à affecter ?"));
+                if(uti.getType().equals("ens"))
+                    admin.creerCours((Enseignant) uti);
+                else
+                    System.out.println("Vous n'avez pas rentré un professeur");
+        }
+
+    }
+
     private static void action_etu(Etudiant etu, Scan sc, HashMap<String , Cours> cours,
                                    ArrayList<Rendu> rendus, ArrayList<Devoir> devoirs){
         String action = sc.ecoute("Que voulez vous faire (sinscrire, creerRendu, consulterDocs) ?");
@@ -127,9 +144,9 @@ public class App {
         }
     }
 
-    private static void action_ens(Enseignant ens, Scan sc, HashMap<String , Cours> cours,
-                                   ArrayList<Rendu> rendus, ArrayList<Devoir> devoirs){
-        String action = sc.ecoute("Que voulez vous faire (donnerCour, creerDevoir, corrigerRendu) ?");
+    private static void action_ens(Enseignant ens, Scan sc, HashMap<String , Cours> cours, ArrayList<Rendu> rendus,
+                                   ArrayList<Devoir> devoirs, HashMap<String, Utilisateur> utilisateurs){
+        String action = sc.ecoute("Que voulez vous faire (donnerCour, creerDevoir, corrigerRendu, remettreCertificat) ?");
         switch (action){
             case "donnerCour":
                 ens.donnerCours(cours.get(sc.ecoute("Quel est le nom du cours ?")));
@@ -141,9 +158,20 @@ public class App {
             case "corrigerRendu":
                 ens.corrigerRendu(rendus.get(sc.ecouteInt("Quel est le numero du rendu ?")));
                 break;
+            case "remettreCertificat":
+                Utilisateur uti = utilisateurs.get(sc.ecoute("Quel est le nom de l'étudiant ?"));
+                Etudiant etu;
+                if(uti.getType().equals("etu")) {
+                    etu = (Etudiant) uti;
+                    ens.remetreCertificat(etu, cours.get(sc.ecoute("Quel est le nom du cours ?")), sc);
+                }
+                else
+                    System.out.println("Vous ne m'avez pas donné un étudiant");
+
+                break;
             default:
                 System.out.println("Votre choix ne correspond à aucune action");
-                action_ens(ens, sc, cours, rendus, devoirs);
+                action_ens(ens, sc, cours, rendus, devoirs, utilisateurs);
                 break;
         }
     }

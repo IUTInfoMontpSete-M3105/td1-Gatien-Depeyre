@@ -37,4 +37,10 @@ public class Enseignant extends Utilisateur{
         System.out.println(rendu.getDocument());
         rendu.setNote(sc.ecouteInt("Quelle note voulez vous mettre ?"));
     }
+
+    public void remetreCertificat(Etudiant etu, Cours cours, Scan sc){
+        Certificat certificat = new Certificat(sc.ecoute("Quelle est votre " +
+                "appréciation pour cet éleve ?"));
+        certificat.estRemit(etu, this, cours);
+    }
 }

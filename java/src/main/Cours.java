@@ -30,12 +30,31 @@ public class Cours {
         }
     }
 
+    public Participation getParticipationDe(Etudiant etu){
+        for (Participation p:this.participations) {
+            if(p.getEtu().equals(etu))
+                return p;
+        }
+        return null;
+    }
 
     public void addEnseignant(Enseignant enseignant){
         enseignants.add(enseignant);
     }
 
     public void addEtudiant(Etudiant etu){
-        Participation participation = new Participation(etu, this);
+        boolean estInscrit = false;
+        for (Participation p: this.participations){
+            if(p.getEtu().equals(etu)) {
+                System.out.println("Cet etudiant est déjà inscrit à ce cours");
+                estInscrit = true;
+            }
+        }
+        if(!estInscrit)
+            participations.add(new Participation(etu, this));
+    }
+
+    public String getNom() {
+        return nom;
     }
 }

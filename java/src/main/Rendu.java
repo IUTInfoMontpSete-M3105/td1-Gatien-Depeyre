@@ -21,6 +21,10 @@ public class Rendu {
         this.note = note;
     }
 
+    public int getNote() {
+        return note;
+    }
+
     @Override
     public String toString() {
         return "Rendu{" +

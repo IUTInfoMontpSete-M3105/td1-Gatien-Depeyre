@@ -14,6 +14,7 @@ public class App {
         HashMap<String , Utilisateur> utilisateurs = new HashMap<>();
         HashMap<String , Cours> cours = new HashMap<>();
         ArrayList<Rendu> rendus = new ArrayList<>();
+        ArrayList<Devoir> devoirs = new ArrayList<>();
         utilisateurs.put("admin", new Admin());
 
 
@@ -30,13 +31,13 @@ public class App {
                 utilisateurs.put(u.getNom(), u);
             }
             else if(utilisateurs.get(msg).getType().equals("etu")){
-                action_etu((Etudiant) utilisateurs.get(msg), sc, cours, rendus);
+                action_etu((Etudiant) utilisateurs.get(msg), sc, cours, rendus, devoirs);
             }
             else if(msg.equals("stop")){
                 System.out.println("Au revoir");
             }
             else{
-                action_ens((Enseignant) utilisateurs.get(msg), sc, cours, rendus);
+                action_ens((Enseignant) utilisateurs.get(msg), sc, cours, rendus, devoirs);
             }
         }
 
@@ -102,7 +103,7 @@ public class App {
     }
 
     private static void action_etu(Etudiant etu, Scan sc, HashMap<String , Cours> cours,
-                                   ArrayList<Rendu> rendus){
+                                   ArrayList<Rendu> rendus, ArrayList<Devoir> devoirs){
         String action = sc.ecoute("Que voulez vous faire (sinscrire, creerRendu, consulterDocs) ?");
         switch (action){
             case "sinscrire":
@@ -111,34 +112,38 @@ public class App {
                 break;
             case "creerRendu":
                 System.out.println("Votre rendu possede le numéro "+rendus.size());
-                rendus.add(etu.creeRendu());
+                rendus.add(etu.creeRendu(devoirs.get(sc.ecouteInt("Quel est le numéro du devoir ?"))));
                 break;
             case "consulterDocs":
                 etu.consulterDocument();
+                for (Rendu r: rendus) {
+                    System.out.println(r.toString());
+                }
                 break;
             default:
                 System.out.println("Ce choix ne correspond à aucune option");
-                action_etu(etu, sc, cours, rendus);
+                action_etu(etu, sc, cours, rendus, devoirs);
                 break;
         }
     }
 
     private static void action_ens(Enseignant ens, Scan sc, HashMap<String , Cours> cours,
-                                   ArrayList<Rendu> rendus){
+                                   ArrayList<Rendu> rendus, ArrayList<Devoir> devoirs){
         String action = sc.ecoute("Que voulez vous faire (donnerCour, creerDevoir, corrigerRendu) ?");
         switch (action){
             case "donnerCour":
                 ens.donnerCours(cours.get(sc.ecoute("Quel est le nom du cours ?")));
                 break;
             case "creerDevoir":
-                ens.creerDevoir(cours.get(sc.ecoute("Quel est le nom du cours ?")));
+                System.out.println("Votre devoir possede le numero "+devoirs.size());
+                devoirs.add(ens.creerDevoir(cours.get(sc.ecoute("Quel est le nom du cours ?"))));
                 break;
             case "corrigerRendu":
                 ens.corrigerRendu(rendus.get(sc.ecouteInt("Quel est le numero du rendu ?")));
                 break;
             default:
                 System.out.println("Votre choix ne correspond à aucune action");
-                action_ens(ens, sc, cours, rendus);
+                action_ens(ens, sc, cours, rendus, devoirs);
                 break;
         }
     }
@@ -165,9 +170,5 @@ public class App {
 
         Devoir dev = enseignant.creerDevoir(fr);
 
-        Rendu r = etudiant.creeRendu();
-        Rendu r2 = etudiant.creeRendu();
-
-        enseignant.corrigerRendu(r);
     }
 }

@@ -31,14 +31,14 @@ public class Etudiant extends Utilisateur{
         return "etu";
     }
 
-    public Rendu creeRendu(){
+    public Rendu creeRendu(Devoir devoir){
         Scan sc = new Scan();
         String doc = sc.ecoute("Faites votre devoir M."+getNom());
         Date actuelle = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String dat = dateFormat.format(actuelle);
 
-        return new Rendu(doc, dat);
+        return new Rendu(doc, dat, devoir);
     }
 
     public void inscrireDansCours(Cours cours){

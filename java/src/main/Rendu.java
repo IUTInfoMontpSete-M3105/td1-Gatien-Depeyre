@@ -1,12 +1,16 @@
 package main;
 
 public class Rendu {
-    private String document, date;
+    private final String document;
+    private final String date;
+    private final Devoir devoir;
     private int note;
 
-    public Rendu(String document, String date) {
+    public Rendu(String document, String date, Devoir devoir) {
         this.document = document;
         this.date = date;
+        this.note = -1;
+        this.devoir = devoir;
     }
 
     public String getDocument() {
